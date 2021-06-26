@@ -1,54 +1,38 @@
 import { NavLink } from 'react-router-dom';
 
-const li_class = `mx-5 text-lg`;
+import routeList from '../data/routeList';
 
-const Navigator = ({ dispatch }) => {
+const LiItem = ({ page, onClick }) => {
+	return (
+		<li className={`mx-5 text-lg`}>
+			<NavLink
+				onClick={onClick}
+				to={routeList.find(item => item.action === page).path}
+				exact
+				activeClassName={`text-th-yellow bg-th-black`}>
+				{routeList.find(item => item.action === page).name}
+			</NavLink>
+		</li>
+	);
+};
+
+const Navigator = ({ dispatch, store }) => {
 	const onLogoutButtonClick = () =>
 		dispatch({ type: 'login', isLogin: false });
 	return (
 		<nav className={`my-10`}>
 			<ul className="flex justify-center">
-				<li className={`${li_class} `}>
-					<NavLink
-						to={`/`}
-						exact
-						activeClassName={`text-th-yellow bg-th-black`}>
-						首頁
-					</NavLink>
-				</li>
-				<li className={`${li_class} `}>
-					<NavLink
-						to={`/mycat`}
-						exact
-						activeClassName={`text-th-yellow bg-th-black`}>
-						我的貓貓
-					</NavLink>
-				</li>
-				<li className={`${li_class} `}>
-					<NavLink
-						to={`/mycat/upload`}
-						exact
-						activeClassName={`text-th-yellow bg-th-black`}>
-						上傳貓貓
-					</NavLink>
-				</li>
-				<li className={`${li_class} `}>
-					<NavLink
-						to={`/myfavorites`}
-						exact
-						activeClassName={`text-th-yellow bg-th-black`}>
-						我的收藏
-					</NavLink>
-				</li>
-				<li className={`${li_class} `}>
-					<NavLink
-						onClick={onLogoutButtonClick}
-						to={`/login`}
-						exact
-						activeClassName={`text-th-yellow bg-th-black`}>
-						登出
-					</NavLink>
-				</li>
+				<LiItem page={'index'} />
+				{store.isLogin ? (
+					<>
+						<LiItem page={'uploaded'} />
+						<LiItem page={'upload'} />
+						<LiItem page={'favorites'} />
+						<LiItem page={'logout'} onClick={onLogoutButtonClick} />
+					</>
+				) : (
+					<LiItem page={'login'} />
+				)}
 			</ul>
 		</nav>
 	);

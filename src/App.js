@@ -4,22 +4,52 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import routeList from './data/routeList';
 
 import Header from './component/Header';
-import Gallery from './component/page/component/Gallery';
-import LoginCart from './component/page/login/LoginCard';
+import IndexMain from './component/page/index/IndexMain';
+import MyCatMain from './component/page/mycat/MyCatMain';
+import LoginCard from './component/page/login/LoginCard';
+import Cropper from './component/page/upload/UploadPage';
 
 const reducer = (state, action) => {
+	// console.log(state);
+
 	// console.log(action);
+
+	const copyState = JSON.parse(JSON.stringify(state));
 
 	switch (action.type) {
 		case 'login':
 			return { ...state, isLogin: action.isLogin };
+		case 'getPublicCats':
+			const { publicCats } = copyState.catList;
+			const newPublicCats = { ...publicCats, ...action.data };
+			copyState.catList.publicCats = newPublicCats;
+			return copyState;
+		case 'getMyCats':
+			const { myCats } = copyState.catList;
+			const newMyCats = { ...myCats, ...action.data };
+			copyState.catList.myCats = newMyCats;
+			return copyState;
 		default:
 			return state;
 	}
 };
 
 const initState = {
-	isLogin: false,
+	isLogin: true,
+	catList: {
+		publicCats: {
+			currentPage: 0,
+			totalPage: 0,
+			limitImg: 9,
+			list: [],
+		},
+		myCats: {
+			currentPage: 0,
+			totalPage: 0,
+			limitImg: 9,
+			list: [],
+		},
+	},
 };
 
 function App() {
@@ -38,7 +68,7 @@ function App() {
 									.path
 							}
 							exact>
-							{/* <Gallery store={store} /> */}
+							<Cropper />
 						</Route>
 						<Route
 							path={
@@ -47,7 +77,7 @@ function App() {
 								).path
 							}
 							exact>
-							<Gallery store={store} />
+							<MyCatMain store={store} dispatch={dispatch} />
 						</Route>
 						<Route
 							path={
@@ -56,7 +86,7 @@ function App() {
 								).path
 							}
 							exact>
-							<Gallery store={store} />
+							{/* <Gallery store={store} dispatch={dispatch} /> */}
 						</Route>
 						<Route
 							path={
@@ -64,10 +94,10 @@ function App() {
 									.path
 							}
 							exact>
-							<LoginCart dispatch={dispatch} />
+							<LoginCard dispatch={dispatch} />
 						</Route>
 						<Route path={`/`} exact>
-							<Gallery store={store} />
+							<IndexMain store={store} dispatch={dispatch} />
 						</Route>
 						<Redirect to={`/`} />
 					</Switch>

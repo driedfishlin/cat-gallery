@@ -1,7 +1,8 @@
 import { withRouter } from 'react-router-dom';
+import GeneralButton from '../../UIElement/GeneralButton';
 
 const labelClass = `mb-1`;
-const inputClass = `text-white bg-th-black rounded-md mb-5`;
+const inputClass = `text-th-black bg-gray-100 rounded-md mb-5 border-none  focus:ring-0`;
 
 const LoginCart = ({ dispatch, history }) => {
 	const onFormSubmit = event => {
@@ -17,10 +18,11 @@ const LoginCart = ({ dispatch, history }) => {
 				<input className={inputClass} type={`text`} />
 				<label className={labelClass}>密碼</label>
 				<input className={inputClass} type={`password`} />
-				<button
+				{/* <button
 					className={`mt-5 w-1/2 self-end bg-yellow-500 py-3 px-5 text-white rounded-md`}>
 					登入
-				</button>
+				</button> */}
+				<GeneralButton text={`登入`} />
 			</form>
 		</div>
 	);

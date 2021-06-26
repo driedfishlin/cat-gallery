@@ -6,17 +6,15 @@ import Navigator from './Navigator';
 
 const Header = ({ store, dispatch }) => {
 	const path = useLocation().pathname;
-	// console.log(path);
-
 	return (
 		<header className={`my-20`}>
-			<div className={`h-36 flex flex-col`}>
+			<div className={`h-40 flex flex-col`}>
 				<h1 className="text-center text-7xl mb-12">Cat Gallery</h1>
-				<h2 className="text-center text-2xl w-2/3 self-end">
-					{routeList.find(item => item.path === path).name}
+				<h2 className="text-center text-md w-2/3 self-end font-bit tracking-normal">
+					{'> ' + routeList.find(item => item.path === path).subTitle}
 				</h2>
 			</div>
-			{store.isLogin && <Navigator dispatch={dispatch} />}
+			<Navigator dispatch={dispatch} store={store} />
 		</header>
 	);
 };
