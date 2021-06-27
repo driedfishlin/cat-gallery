@@ -5,7 +5,7 @@ import GeneralButton from '../../UIElement/GeneralButton';
 const labelClass = `mb-1`;
 const inputClass = `text-th-black bg-gray-100 rounded-md mb-5 border-none  focus:ring-0`;
 
-// generate a hash from string
+// use a string to generate a hash
 const convertStringIntoHash = string => {
 	let hash = 0;
 	for (let i = 0; i < string.length; ++i)

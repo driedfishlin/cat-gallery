@@ -6,6 +6,7 @@ import 'cropperjs/dist/cropper.min.css';
 
 import GeneralButton from '../../UIElement/GeneralButton';
 import LoadingAnimation from '../../UIElement/LoadingAnimation';
+import ErrorMessage from '../ErrorMessage';
 import { postUploadImage } from '../../../Utilities/ajax';
 
 const UploadPage = () => {
@@ -13,6 +14,7 @@ const UploadPage = () => {
 	const [imgSrcState, setImgState] = useState(null);
 	const [errorMessageState, setErrorMessageState] = useState(null);
 	const [waitResponseState, setWaitResponseState] = useState(false);
+	const [ajaxErrorState, setAjaxErrorState] = useState(false);
 	const history = useHistory();
 
 	//PART> Dropzone settings
@@ -61,9 +63,12 @@ const UploadPage = () => {
 			await postUploadImage(blob);
 			history.replace('/mycat');
 		} catch (error) {
-			console.log(error);
+			console.error(error.message);
+			setAjaxErrorState(true);
 		}
 	};
+
+	if (ajaxErrorState) return <ErrorMessage customClass={`py-20`} />;
 
 	return (
 		<div className={`relative`}>

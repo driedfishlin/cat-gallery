@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
-const ErrorMessage = ({ situation }) => {
+const ErrorMessage = ({ situation, customClass }) => {
 	return (
 		<div className={`mx-auto my-20`}>
-			<p className={`text-xl text-center`}>
+			<p className={`text-xl text-center ${customClass}`}>
 				{(function () {
 					switch (situation) {
 						case 'noLogin':
