@@ -25,7 +25,7 @@ export const reducer = (state, action) => {
 };
 
 export const initState = {
-	isLogin: true,
+	isLogin: false,
 	catList: {
 		publicCats: {
 			currentPage: 0,
