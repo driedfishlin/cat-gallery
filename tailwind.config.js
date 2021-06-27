@@ -14,8 +14,12 @@ module.exports = {
 		},
 	},
 	variants: {
-		extend: { opacity: ['disabled'] },
-		backgroundColor: ['active'],
+		extend: {
+			opacity: ['disabled'],
+			backgroundColor: ['active'],
+			scale: ['active', 'group-hover'],
+			visibility: ['group-hover'],
+		},
 	},
 	plugins: [require('@tailwindcss/forms')],
 };

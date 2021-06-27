@@ -1,15 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Dropzone from 'dropzone';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.min.css';
 
 import GeneralButton from '../../UIElement/GeneralButton';
+import LoadingAnimation from '../../UIElement/LoadingAnimation';
 import { postUploadImage } from '../../../Utilities/ajax';
 
 const UploadPage = () => {
 	const cropperRef = useRef(null);
 	const [imgSrcState, setImgState] = useState(null);
 	const [errorMessageState, setErrorMessageState] = useState(null);
+	const [waitResponseState, setWaitResponseState] = useState(false);
+	const history = useHistory();
 
 	//PART> Dropzone settings
 	useEffect(() => {
@@ -45,24 +49,29 @@ const UploadPage = () => {
 	//PART> FUNCTION
 	const onFormSubmit = async event => {
 		event.preventDefault();
-		console.log('submit!');
-
-		if (!cropperRef.current) return;
-		const imgBase64 = cropperRef.current.cropper
-			.getCroppedCanvas()
-			.toDataURL();
-		const converted = await fetch(imgBase64);
-		const blob = await converted.blob();
-		//
-		const response = await postUploadImage(blob);
-		console.log(response);
+		setWaitResponseState(true);
+		try {
+			if (!cropperRef.current) return;
+			const imgBase64 = cropperRef.current.cropper
+				.getCroppedCanvas()
+				.toDataURL();
+			const converted = await fetch(imgBase64);
+			const blob = await converted.blob();
+			//
+			await postUploadImage(blob);
+			history.replace('/mycat');
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
-		<div>
+		<div className={`relative`}>
 			<form
 				onSubmit={onFormSubmit}
-				className={`flex flex-col items-center `}>
+				className={`flex flex-col items-center ${
+					waitResponseState ? 'pointer-events-none opacity-60' : ''
+				}`}>
 				<div
 					className={`relative mb-14 bg-white rounded-2xl shadow-md`}
 					style={{
@@ -117,6 +126,9 @@ const UploadPage = () => {
 					customClass={imgSrcState || 'opacity-50'}
 				/>
 			</form>
+			{waitResponseState && (
+				<LoadingAnimation customClass={'absolute top-0 left-0'} />
+			)}
 		</div>
 	);
 };

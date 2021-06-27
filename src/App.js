@@ -6,14 +6,11 @@ import routeList from './data/routeList';
 import Header from './component/Header';
 import IndexMain from './component/page/index/IndexMain';
 import MyCatMain from './component/page/mycat/MyCatMain';
+import MyFavorites from './component/page/myFavorites/MyFavorites';
 import LoginCard from './component/page/login/LoginCard';
 import Cropper from './component/page/upload/UploadPage';
 
 const reducer = (state, action) => {
-	// console.log(state);
-
-	// console.log(action);
-
 	const copyState = JSON.parse(JSON.stringify(state));
 
 	switch (action.type) {
@@ -29,6 +26,11 @@ const reducer = (state, action) => {
 			const newMyCats = { ...myCats, ...action.data };
 			copyState.catList.myCats = newMyCats;
 			return copyState;
+		case 'getMyFavorites':
+			const { myFavorites } = copyState.catList;
+			const newMyFavorites = { ...myFavorites, ...action.data };
+			copyState.catList.myFavorites = newMyFavorites;
+			return copyState;
 		default:
 			return state;
 	}
@@ -41,13 +43,19 @@ const initState = {
 			currentPage: 0,
 			totalPage: 0,
 			limitImg: 9,
-			list: [],
+			list: null,
 		},
 		myCats: {
 			currentPage: 0,
 			totalPage: 0,
 			limitImg: 9,
-			list: [],
+			list: null,
+		},
+		myFavorites: {
+			currentPage: 0,
+			totalPage: 0,
+			limitImg: 9,
+			list: null,
 		},
 	},
 };
@@ -86,7 +94,7 @@ function App() {
 								).path
 							}
 							exact>
-							{/* <Gallery store={store} dispatch={dispatch} /> */}
+							<MyFavorites store={store} dispatch={dispatch} />
 						</Route>
 						<Route
 							path={

@@ -38,7 +38,7 @@ const IndexMain = ({ store, dispatch }) => {
 	return (
 		<Gallery
 			currentPageData={store.catList.publicCats}
-			ajaxFns={{ getPublicCats }}
+			ajaxFns={getPublicCats}
 			reducerArr={[store, dispatch]}
 		/>
 	);
