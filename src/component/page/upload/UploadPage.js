@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Dropzone from 'dropzone';
-import Cropper from 'react-cropper';
+import Dropzone from 'dropzone'; //（拖曳上傳檔案之套件）
+import Cropper from 'react-cropper'; //（裁剪圖片之套件）
 import 'cropperjs/dist/cropper.min.css';
 
 import GeneralButton from '../../UIElement/GeneralButton';
@@ -43,8 +43,8 @@ const UploadPage = () => {
 				},
 			});
 		} catch (error) {
-			//FIXME> 為了方便開發，先避免錯誤彈出
-			// console.log(error);
+			// 推測為 Webpack 在開發模式下的 code 抽換機制會造成 dropzone 重複掛載
+			// 為了開發上的方便，設定 try...catch 避免錯誤彈出
 		}
 	}, []);
 
@@ -57,6 +57,7 @@ const UploadPage = () => {
 			const imgBase64 = cropperRef.current.cropper
 				.getCroppedCanvas()
 				.toDataURL();
+			// convert base64 string into the blob format
 			const converted = await fetch(imgBase64);
 			const blob = await converted.blob();
 			//
@@ -86,6 +87,8 @@ const UploadPage = () => {
 						marginLeft: 'auto',
 					}}>
 					{imgSrcState === null ? (
+						// 藉由 dropzone 取得檔案後卸載該元件
+						// 並掛載 cropper 元件進行圖片裁剪
 						<>
 							<div
 								id={`dropzone_block`}

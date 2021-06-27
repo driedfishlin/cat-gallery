@@ -4,7 +4,7 @@ import CatItem from './UIElement/CatItem';
 import PagingButton from './PagingButton';
 import ErrorMessage from './page/ErrorMessage';
 
-const Gallery = ({ reducerArr, currentPageData, ajaxFns }) => {
+const Gallery = ({ reducerArr, currentPageData, ajaxFn }) => {
 	const store = reducerArr[0];
 	const path = useLocation().pathname;
 	// console.log(path);
@@ -25,7 +25,6 @@ const Gallery = ({ reducerArr, currentPageData, ajaxFns }) => {
 								key={favoriteId || id}
 								id={id}
 								favoriteId={favoriteId}
-								isFavorite={null}
 								isLogin={store.isLogin}
 							/>
 						))
@@ -39,8 +38,7 @@ const Gallery = ({ reducerArr, currentPageData, ajaxFns }) => {
 			<PagingButton
 				currentNum={currentPageData.currentPage + 1}
 				totalNum={currentPageData.totalPage}
-				ajaxFn={ajaxFns}
-				reducerArr={reducerArr}
+				ajaxFn={ajaxFn}
 			/>
 		</>
 	);

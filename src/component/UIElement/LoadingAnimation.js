@@ -1,3 +1,4 @@
+// 轉圈的圓形動畫元素 //
 const LoadingAnimation = ({ customClass }) => {
 	return (
 		<div

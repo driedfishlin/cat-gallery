@@ -1,3 +1,4 @@
+// 位於收藏頁的圖片列表區域 //
 import { useEffect, useState } from 'react';
 import Gallery from '../../Gallery';
 
@@ -8,8 +9,7 @@ const MyFavorites = ({ store, dispatch }) => {
 	const [ajaxErrorState, setAjaxErrorState] = useState(false);
 
 	// order: -1 => 取往前九項, 0 => 取當前九項, 1 => 取往後九項
-	const getMyFavorites = async (reducerArr, order = 0) => {
-		const [store, dispatch] = reducerArr;
+	const getMyFavorites = async (order = 0) => {
 		try {
 			const response = await getMyFavoritesFormRemote(
 				store.catList.myFavorites.limitImg,
@@ -32,7 +32,7 @@ const MyFavorites = ({ store, dispatch }) => {
 	};
 
 	useEffect(() => {
-		getMyFavorites([store, dispatch]);
+		getMyFavorites();
 	}, []);
 
 	if (ajaxErrorState) return <ErrorMessage customClass={`py-20`} />;
@@ -40,7 +40,7 @@ const MyFavorites = ({ store, dispatch }) => {
 	return (
 		<Gallery
 			currentPageData={store.catList.myFavorites}
-			ajaxFns={getMyFavorites}
+			ajaxFn={getMyFavorites}
 			reducerArr={[store, dispatch]}
 		/>
 	);

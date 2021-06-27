@@ -1,3 +1,4 @@
+// 位於已上傳圖片頁的列表區域 //
 import { useEffect, useState } from 'react';
 import Gallery from '../../Gallery';
 
@@ -8,8 +9,7 @@ const MyCatMain = ({ store, dispatch }) => {
 	const [ajaxErrorState, setAjaxErrorState] = useState(false);
 
 	// order: -1 => 取往前九項, 0 => 取當前九項, 1 => 取往後九項
-	const getMyCats = async (reducerArr, order = 0) => {
-		const [store, dispatch] = reducerArr;
+	const getMyCats = async (order = 0) => {
 		try {
 			const response = await getMyCatsFormRemote(
 				store.catList.myCats.limitImg,
@@ -31,7 +31,7 @@ const MyCatMain = ({ store, dispatch }) => {
 	};
 
 	useEffect(() => {
-		getMyCats([store, dispatch]);
+		getMyCats();
 	}, []);
 
 	if (ajaxErrorState) return <ErrorMessage customClass={`py-20`} />;
@@ -39,7 +39,7 @@ const MyCatMain = ({ store, dispatch }) => {
 	return (
 		<Gallery
 			currentPageData={store.catList.myCats}
-			ajaxFns={getMyCats}
+			ajaxFn={getMyCats}
 			reducerArr={[store, dispatch]}
 		/>
 	);

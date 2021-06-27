@@ -1,17 +1,14 @@
+// 位於照片列表下方的分頁按鈕 //
 import arrowImg from '../image/arrow.png';
 
-const PagingButton = ({ currentNum, totalNum, ajaxFn, reducerArr }) => {
+const PagingButton = ({ currentNum, totalNum, ajaxFn }) => {
+	const onButtonClick = order => {
+		ajaxFn(order);
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	};
 	return (
 		<div className={`flex justify-center items-center my-16`}>
-			<button
-				onClick={
-					currentNum > 1
-						? () => {
-								ajaxFn(reducerArr, -1);
-								window.scrollTo({ top: 0, behavior: 'smooth' });
-						  }
-						: null
-				}>
+			<button onClick={currentNum > 1 ? () => onButtonClick(-1) : null}>
 				<img
 					className={`w-14 h-14 opacity-80 transform rotate-180`}
 					src={arrowImg}
@@ -22,14 +19,7 @@ const PagingButton = ({ currentNum, totalNum, ajaxFn, reducerArr }) => {
 				<span>{currentNum || 1}</span> / <span>{totalNum || 1}</span>
 			</p>
 			<button
-				onClick={
-					currentNum < totalNum
-						? () => {
-								ajaxFn(reducerArr, 1);
-								window.scrollTo({ top: 0, behavior: 'smooth' });
-						  }
-						: null
-				}>
+				onClick={currentNum < totalNum ? () => onButtonClick(1) : null}>
 				<img
 					className={`w-14 h-14 opacity-80`}
 					src={arrowImg}

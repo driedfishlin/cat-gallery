@@ -1,3 +1,4 @@
+// 用於 response 異常或例外狀況時的畫面顯示 //
 import { Link } from 'react-router-dom';
 
 const ErrorMessage = ({ situation, customClass }) => {

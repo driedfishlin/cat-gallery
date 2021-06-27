@@ -1,3 +1,4 @@
+// 圖片列表的每個項目單位元件 //
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import heart from '../../image/heart_red.png';
@@ -8,49 +9,57 @@ import {
 	deleteUploadedImage,
 } from '../../Utilities/ajax';
 
-const CatItem = ({ imgSrc, isLogin, id, isFavorite, favoriteId }) => {
+const CatItem = ({ imgSrc, isLogin, id, favoriteId }) => {
 	const path = useLocation().pathname;
 	const [favoriteState, setFavoriteState] = useState(
 		favoriteId !== undefined
 	);
 	const [ajaxLoadingState, setAjaxLoadingState] = useState(false);
+
+	//PART> FUNCTION
+
 	const addFavoriteCat = async id => {
 		setAjaxLoadingState(true);
 		try {
 			await postFavoriteCat(id);
 			setFavoriteState(true);
 		} catch (error) {
-			console.log(error);
+			console.error(error.message);
 			if (
 				error.response.data.message ===
 				'DUPLICATE_FAVOURITE - favourites are unique for account + image_id + sub_id'
 			)
 				setFavoriteState(true);
 		} finally {
+			// 礙於 API 的回傳資料不足
 			// 讓按鈕在「我的收藏」頁之外的地方無法進行後續互動
 			if (favoriteId !== undefined) setAjaxLoadingState(false);
 		}
 	};
+
 	const removeFavoriteCat = async id => {
 		setAjaxLoadingState(true);
 		try {
 			await deleteFavoriteCat(id);
 			setFavoriteState(false);
 		} catch (error) {
-			console.log(error);
+			console.error(error.message);
 		} finally {
 			setAjaxLoadingState(false);
 		}
 	};
+
 	const removeUploadedCat = async id => {
 		setAjaxLoadingState(true);
 		try {
 			await deleteUploadedImage(id);
 			window.location.assign(window.location.href);
 		} catch (error) {
-			console.log(error);
+			console.error(error.message);
 		}
 	};
+
+	//PART>
 	return (
 		<div className={`my-10 mx-10 px-2 relative group`}>
 			{isLogin && (
@@ -83,7 +92,7 @@ const CatItem = ({ imgSrc, isLogin, id, isFavorite, favoriteId }) => {
 					/>
 				)}
 			</div>
-			{path === '/mycat' && (
+			{path === '/mycat' && id && (
 				<button
 					onClick={() => removeUploadedCat(id)}
 					className={`bg-white text-2xl w-10 h-10 rounded-full  leading-10 absolute right-3 bottom-3 transition-transform transform ${
