@@ -15,7 +15,7 @@ function App() {
 	const [store, dispatch] = useReducer(reducer, initState);
 
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename={process.env.PUBLIC_URL}>
 			<div className="max-w-screen-lg mx-auto pb-28">
 				<Header store={store} dispatch={dispatch} />
 				<main>
